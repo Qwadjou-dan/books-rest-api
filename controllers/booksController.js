@@ -3,17 +3,17 @@ const BookModel = require("../models/booksModel");
 
 //controllers
 const getBooksController = (req, res) => {
-  //Retrieving all books
-  BookModel.find()
-    .then((book) => {
-      res.status(201).json(book);
-    })
-    .catch((err) => console.log(err));
-
   //Retrieve one book by Id
   let { id } = req.params;
   if (id) {
     BookModel.findById(id)
+      .then((book) => {
+        res.status(201).json(book);
+      })
+      .catch((err) => console.log(err));
+  } else {
+    //Retrieving all books
+    BookModel.find()
       .then((book) => {
         res.status(201).json(book);
       })
