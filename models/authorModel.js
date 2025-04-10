@@ -16,6 +16,11 @@ const AuthorSchema = Schema({
     type: String,
     required: true,
   },
+  bookId: {
+    type: Schema.Types.ObjectId,
+    ref: "Books",
+    required: true,
+  },
 });
 
 //create and connect model to schema

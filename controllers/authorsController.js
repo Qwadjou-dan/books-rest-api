@@ -28,6 +28,7 @@ const retrieveAuthorsDetails = (req, res) => {
   let { id } = req.params;
   if (id) {
     AuthorModel.findById(id)
+      .populate("bookId", "title description -_id")
       .then((author) => {
         res.status(201).json({ message: "Author retrieved", data: author });
       })
@@ -35,6 +36,7 @@ const retrieveAuthorsDetails = (req, res) => {
   } else {
     //Retrieve all authors
     AuthorModel.find()
+      .populate("bookId", "title description -_id")
       .then((authors) => {
         res.status(201).json({ message: "Authors retrieved", data: authors });
       })

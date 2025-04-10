@@ -18,7 +18,7 @@ server.use(authorRoute);
 //start server
 mongoose
   .connect(
-    "mongodb+srv://DanDb:qjy6C37vOAu4lS0t@cluster0.8kbvt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://DanDb:oB7oOv2lGIAwSkWR@cluster0.8kbvt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
   )
   .then(() => {
     server.listen(7090, "localhost", () => {
