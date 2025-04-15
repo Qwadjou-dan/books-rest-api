@@ -3,6 +3,7 @@ const bodyParser = require("body-parser");
 const express = require("express");
 const bookRoute = require("./routes/booksRoute");
 const authorRoute = require("./routes/authorsRoute");
+const readerRoute = require("./routes/readersRoute");
 const mongoose = require("mongoose");
 
 //initialize
@@ -14,11 +15,12 @@ server.use(bodyParser.json());
 //routes
 server.use(bookRoute);
 server.use(authorRoute);
+server.use(readerRoute);
 
 //start server
 mongoose
   .connect(
-    "mongodb+srv://DanDb:oB7oOv2lGIAwSkWR@cluster0.8kbvt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
+    "mongodb+srv://DanDb:H3lKVIOItYuHadmj@cluster0.8kbvt.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"
   )
   .then(() => {
     server.listen(7090, "localhost", () => {
