@@ -1,5 +1,24 @@
 //import
 const BookModel = require("../models/booksModel");
+const { body, validationResult } = require("express-validator");
+
+//Validate details
+const validateBooksDetails = [
+  body("description")
+    .trim()
+    .notEmpty()
+    .withMessage("Description is required")
+    .custom((value) => {
+      const wordCount = value.trim().split(/\s+/).length;
+      if (wordCount > 20) {
+        throw new Error("Description must not exceed than 20 words");
+      } else {
+        return true;
+      }
+    }),
+  body("title").trim().notEmpty().withMessage("Book title is required"),
+  body("author").trim().notEmpty().withMessage("Author is required"),
+];
 
 //controllers
 const getBooksController = (req, res) => {
@@ -15,7 +34,7 @@ const getBooksController = (req, res) => {
     //Retrieving all books
     BookModel.find()
       .then((book) => {
-        res.status(201).json(book);
+        res.status(200).json(book);
       })
       .catch((err) => console.log(err));
   }
@@ -23,10 +42,18 @@ const getBooksController = (req, res) => {
 
 const addBooksController = (req, res) => {
   const { title, author, description } = req.body;
+  //validation check
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    console.log(errors);
+    const AllErrMsgs = errors.array().map((err) => err.msg);
+    return res.status(404).json({ message: AllErrMsgs });
+  }
+
   const book = BookModel({ title, author, description });
   book
     .save()
-    .then(() => {
+    .then((book) => {
       res.status(201).json({ message: "Book added successfully", data: book });
     })
     .catch((err) => console.log(err));
@@ -43,7 +70,7 @@ const updateBookController = (req, res) => {
         (book.description = description);
       book
         .save()
-        .then(() => {
+        .then((book) => {
           res
             .status(201)
             .json({ message: "Book is successfully updated", data: book });
@@ -72,4 +99,5 @@ module.exports = {
   addBooksController,
   updateBookController,
   deleteBookController,
+  validateBooksDetails,
 };
